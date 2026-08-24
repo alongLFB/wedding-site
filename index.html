@@ -4,24 +4,25 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Rosé & Bloom Events | 高端婚礼策划与设计</title>
+  <title>Rosé & Bloom Events | 高端定制婚礼策划与设计 | Euka Events</title>
   <meta name="description" content="Rosé & Bloom Events — 专注高端定制婚礼策划、设计与执行。我们将您的爱情故事化为一场难忘的视觉盛宴。服务覆盖全球目的地婚礼。" />
-  <meta name="keywords" content="婚礼策划, 高端婚礼, 目的地婚礼, 婚礼设计, 婚礼执行, luxury wedding planner" />
+  <meta name="keywords" content="婚礼策划, 高端婚礼, 目的地婚礼, 婚礼设计, 婚礼执行, 意大利婚礼, luxury wedding planner, euka events" />
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Rosé & Bloom Events | 高端婚礼策划与设计" />
-  <meta property="og:description" content="将您的爱情故事化为一场难忘的视觉盛宴" />
+  <meta property="og:title" content="Rosé & Bloom Events | 高端定制婚礼策划与设计" />
+  <meta property="og:description" content="将您的爱情故事化为一场难忘的视觉盛宴。全球奢华目的地婚礼定制。" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.eukaevents.com/" />
 
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Raleway:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
 
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="index.css?v=2" />
+  <link rel="stylesheet" href="index.css?v=3" />
 
-  <!-- Favicon (inline SVG) -->
+  <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌹</text></svg>" />
 </head>
 <body class="page-loading">
@@ -31,12 +32,16 @@
        ============================================================ -->
   <header class="header header--transparent" id="header">
     <div class="header__inner">
-      <a href="#" class="header__logo">Rosé & Bloom</a>
+      <a href="#home" class="header__logo">
+        <span class="header__logo-main">Rosé & Bloom</span>
+        <span class="header__logo-sub">Events</span>
+      </a>
 
       <nav class="header__nav" id="main-nav">
         <a href="#home" class="header__nav-link header__nav-link--active" data-i18n="nav.home">首页</a>
         <a href="#about" class="header__nav-link" data-i18n="nav.about">关于我们</a>
         <a href="#services" class="header__nav-link" data-i18n="nav.services">服务</a>
+        <a href="#destinations" class="header__nav-link" data-i18n="nav.destinations">目的地</a>
         <a href="#portfolio" class="header__nav-link" data-i18n="nav.portfolio">作品集</a>
         <a href="#testimonials" class="header__nav-link" data-i18n="nav.testimonials">客户评价</a>
         <a href="#contact" class="header__nav-link" data-i18n="nav.contact">联系我们</a>
@@ -50,7 +55,6 @@
       </nav>
 
       <div class="header__right-mobile">
-        <!-- Mobile Language Toggle -->
         <button class="lang-toggle lang-toggle--mobile" id="lang-toggle-mobile" aria-label="Switch language">
           <span class="lang-toggle__label lang-toggle__label--zh lang-toggle__label--active">中</span>
           <span class="lang-toggle__divider">/</span>
@@ -65,11 +69,12 @@
     </div>
   </header>
 
-  <!-- Mobile Navigation -->
+  <!-- Mobile Navigation Drawer -->
   <div class="mobile-nav" id="mobile-nav">
     <a href="#home" class="mobile-nav__link" data-i18n="nav.home">首页</a>
     <a href="#about" class="mobile-nav__link" data-i18n="nav.about">关于我们</a>
     <a href="#services" class="mobile-nav__link" data-i18n="nav.services">服务</a>
+    <a href="#destinations" class="mobile-nav__link" data-i18n="nav.destinations">目的地</a>
     <a href="#portfolio" class="mobile-nav__link" data-i18n="nav.portfolio">作品集</a>
     <a href="#testimonials" class="mobile-nav__link" data-i18n="nav.testimonials">客户评价</a>
     <a href="#contact" class="mobile-nav__link" data-i18n="nav.contact">联系我们</a>
@@ -80,7 +85,7 @@
        ============================================================ -->
   <section class="hero" id="home">
     <div class="hero__bg">
-      <img src="images/hero.png" alt="Elegant outdoor wedding ceremony with floral arrangements" />
+      <img src="images/hero.png" alt="Luxury wedding ceremony with romantic floral arches" />
     </div>
     <div class="hero__overlay"></div>
 
@@ -88,6 +93,11 @@
       <p class="hero__tagline" data-i18n="hero.tagline">Luxury Wedding Planning & Design</p>
       <h1 class="hero__title">Rosé & Bloom</h1>
       <p class="hero__subtitle" data-i18n="hero.subtitle">将每一段爱情故事，编织成永恒的璀璨记忆</p>
+      
+      <div class="hero__cta-group">
+        <a href="#portfolio" class="btn btn--primary" data-i18n="nav.portfolio">探索作品集</a>
+        <a href="#destinations" class="btn btn--outline" data-i18n="nav.destinations">探索目的地</a>
+      </div>
     </div>
 
     <div class="hero__scroll-indicator">
@@ -103,7 +113,7 @@
     <div class="container">
       <div class="about__grid">
         <div class="about__image-wrapper reveal reveal--left">
-          <img src="images/bouquet.png" alt="Elegant bridal bouquet with roses and peonies" class="about__image" />
+          <img src="images/bouquet.png" alt="Elegant bridal bouquet with garden roses" class="about__image" />
         </div>
 
         <div class="about__content reveal reveal--right">
@@ -115,12 +125,11 @@
           </p>
           <p class="about__text" data-i18n="about.text2">
             拥有超过十年的行业经验，我们已成功策划了数百场令人难忘的婚礼庆典。
-            从旧金山的浪漫海滨到巴厘岛的热带花园，从巴黎的古典城堡到京都的传统神社，
+            从阿马尔菲与科莫湖的悬崖庄园，到巴黎的古典宫殿与京都的静谧庭院，
             我们的足迹遍布世界各地，为每一对新人打造专属的梦幻婚礼。
           </p>
           <p class="about__text" data-i18n="about.text3">
-            我们坚持每个周末只承接一场婚礼，确保每一位客户都能获得最专注、
-            最贴心的个性化服务体验。
+            我们坚持每个周末只承接一场婚礼，确保每一位客户都能获得最专注、最贴心的个性化服务体验。
           </p>
           <p class="about__signature">— Rosé & Bloom Team</p>
         </div>
@@ -132,11 +141,11 @@
        STATS BANNER
        ============================================================ -->
   <div class="banner" id="stats-banner">
-    <img src="images/couple.png" alt="Romantic wedding couple portrait at golden hour" class="banner__image" />
+    <img src="images/couple.png" alt="Romantic couple at sunset" class="banner__image" />
     <div class="banner__overlay">
       <div class="banner__content">
         <p class="banner__quote" data-i18n="banner.quote">
-          "婚礼不仅仅是一天的庆典，<br/>更是两个灵魂交汇的永恒诗篇。"
+          “婚礼不仅仅是一天的庆典，<br/>更是两个灵魂交汇的永恒诗篇。”
         </p>
         <p class="banner__author" data-i18n="banner.author">— Rosé & Bloom Philosophy</p>
       </div>
@@ -319,67 +328,94 @@
   </section>
 
   <!-- ============================================================
-       PORTFOLIO SECTION
+       DESTINATIONS SECTION (BANNER + INTERACTIVE MAP + VENUE LIST)
+       ============================================================ -->
+  <section class="destinations section" id="destinations">
+    <!-- Destinations Hero Banner -->
+    <div class="dest-banner">
+      <div class="dest-banner__bg">
+        <img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1920&q=85" alt="Worldwide destination venues" />
+      </div>
+      <div class="dest-banner__overlay"></div>
+      <div class="container dest-banner__content reveal">
+        <span class="dest-banner__tagline" data-i18n="destinations.banner.tagline">Exclusive Worldwide Destination Weddings</span>
+        <h2 class="dest-banner__title" data-i18n="destinations.banner.title">世界级奢华婚礼目的地</h2>
+        <div class="section-header__divider"></div>
+        <p class="dest-banner__desc" data-i18n="destinations.banner.desc">
+          无论是托斯卡纳的日光倾城，还是科莫湖畔的优雅静谧，我们为您严选全球顶级场地，提供一站式跨国筹备与贵宾接待体验。
+        </p>
+      </div>
+    </div>
+
+    <!-- Interactive SVG Map with Sized Pin Bullets -->
+    <div class="container dest-map-section">
+      <div class="section-header reveal">
+        <span class="section-header__label" data-i18n="destinations.label">Worldwide Venues</span>
+        <h3 class="section-header__title" data-i18n="destinations.map.title">交互式目的地探索地图</h3>
+        <div class="section-header__divider"></div>
+        <p class="section-header__description" data-i18n="destinations.map.subtitle">
+          点击地图上的高光标记，探索不同地区的私属场地与深度策划指南
+        </p>
+        <span class="dest-map__hint" data-i18n="destinations.map.hint">✦ 悬停查看亮点 · 点击定位场地列表</span>
+      </div>
+
+      <!-- Map Render Container -->
+      <div class="dest-map__canvas reveal" id="interactive-map-container">
+        <!-- Injected dynamically via DestinationsManager.renderMap() -->
+      </div>
+    </div>
+
+    <!-- Destinations Venue Grid & Region Filter (One&Only Style) -->
+    <div class="container dest-list-section" id="destinations-list">
+      <!-- Filter Tabs -->
+      <div class="dest-filter reveal">
+        <button class="dest-filter__btn active" data-region="all" data-i18n="destinations.filter.all">全部地区</button>
+        <button class="dest-filter__btn" data-region="italy" data-i18n="destinations.filter.italy">意大利 (Italy)</button>
+        <button class="dest-filter__btn" data-region="france" data-i18n="destinations.filter.france">法国 (France)</button>
+        <button class="dest-filter__btn" data-region="mediterranean" data-i18n="destinations.filter.mediterranean">地中海 (Mediterranean)</button>
+        <button class="dest-filter__btn" data-region="asia" data-i18n="destinations.filter.asia">亚太地区 (Asia-Pacific)</button>
+        <button class="dest-filter__btn" data-region="americas" data-i18n="destinations.filter.americas">美洲 (Americas)</button>
+      </div>
+
+      <!-- Destination Cards Grid -->
+      <div class="dest-grid" id="destinations-grid">
+        <!-- Injected dynamically via DestinationsManager.renderList() -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PORTFOLIO SECTION (3x2 SQUARE GRID & PIX AUTO-LAYOUT MODAL)
        ============================================================ -->
   <section class="portfolio section" id="portfolio">
     <div class="container">
       <div class="section-header reveal">
         <span class="section-header__label" data-i18n="portfolio.label">Our Portfolio</span>
-        <h2 class="section-header__title" data-i18n="portfolio.title">精选作品</h2>
+        <h2 class="section-header__title" data-i18n="portfolio.title">精选真实婚礼案例</h2>
         <div class="section-header__divider"></div>
         <p class="section-header__description" data-i18n="portfolio.description">
-          每一场婚礼都是一件独特的艺术品。以下是我们精心策划的部分婚礼作品展示。
+          每一场婚礼都是一首专属定制的视觉诗篇。正方形 3×2 精选网格，点击任意案例探索全画幅画廊与背后故事。
         </p>
       </div>
 
-      <div class="portfolio__grid">
-        <div class="portfolio__item portfolio__item--wide reveal">
-          <img src="images/hero.png" alt="Outdoor wedding ceremony with floral arch" class="portfolio__image" />
-          <div class="portfolio__overlay">
-            <span class="portfolio__item-title">Emily & James</span>
-            <span class="portfolio__item-location">Tuscany, Italy</span>
-          </div>
-        </div>
+      <!-- Portfolio Filter Tabs -->
+      <div class="portfolio-filter reveal">
+        <button class="portfolio-filter__btn active" data-filter="all" data-i18n="portfolio.filter.all">全部案例</button>
+        <button class="portfolio-filter__btn" data-filter="italy" data-i18n="portfolio.filter.italy">意大利 (Italy)</button>
+        <button class="portfolio-filter__btn" data-filter="france" data-i18n="portfolio.filter.france">法国 (France)</button>
+        <button class="portfolio-filter__btn" data-filter="greece" data-i18n="portfolio.filter.greece">希腊 (Greece)</button>
+        <button class="portfolio-filter__btn" data-filter="asia" data-i18n="portfolio.filter.asia">亚太地区 (Asia)</button>
+        <button class="portfolio-filter__btn" data-filter="americas" data-i18n="portfolio.filter.americas">北美地区 (Americas)</button>
+      </div>
 
-        <div class="portfolio__item reveal reveal--delay-1">
-          <img src="images/bouquet.png" alt="Bridal bouquet close up" class="portfolio__image" />
-          <div class="portfolio__overlay">
-            <span class="portfolio__item-title">Sophie & Liam</span>
-            <span class="portfolio__item-location">Napa Valley, California</span>
-          </div>
-        </div>
+      <!-- 3x2 Square Grid -->
+      <div class="portfolio-grid" id="portfolio-grid">
+        <!-- Injected dynamically via PortfolioManager.renderGrid() -->
+      </div>
 
-        <div class="portfolio__item reveal reveal--delay-1">
-          <img src="images/details.png" alt="Wedding invitation flat lay" class="portfolio__image" />
-          <div class="portfolio__overlay">
-            <span class="portfolio__item-title">Yuki & Haruto</span>
-            <span class="portfolio__item-location">Kyoto, Japan</span>
-          </div>
-        </div>
-
-        <div class="portfolio__item reveal reveal--delay-2">
-          <img src="images/reception.png" alt="Luxury reception table setting" class="portfolio__image" />
-          <div class="portfolio__overlay">
-            <span class="portfolio__item-title">Alexandra & William</span>
-            <span class="portfolio__item-location">Paris, France</span>
-          </div>
-        </div>
-
-        <div class="portfolio__item portfolio__item--wide reveal reveal--delay-2">
-          <img src="images/venue.png" alt="Luxury wedding venue at twilight" class="portfolio__image" />
-          <div class="portfolio__overlay">
-            <span class="portfolio__item-title">Charlotte & Oliver</span>
-            <span class="portfolio__item-location">English Countryside</span>
-          </div>
-        </div>
-
-        <div class="portfolio__item reveal reveal--delay-3">
-          <img src="images/couple.png" alt="Couple walking through garden" class="portfolio__image" />
-          <div class="portfolio__overlay">
-            <span class="portfolio__item-title">Mia & Ethan</span>
-            <span class="portfolio__item-location">Maui, Hawaii</span>
-          </div>
-        </div>
+      <!-- Pagination Container -->
+      <div id="portfolio-pagination">
+        <!-- Injected dynamically via PortfolioManager.renderPagination() -->
       </div>
     </div>
   </section>
@@ -405,7 +441,7 @@
               我们收到了无数来宾的赞叹，这一切都归功于他们出色的团队。
             </p>
             <p class="testimonial-card__author">Emily & James</p>
-            <p class="testimonial-card__event">Tuscany Wedding · 2024</p>
+            <p class="testimonial-card__event">Amalfi Coast Wedding · 2024</p>
           </div>
 
           <div class="testimonial-card">
@@ -415,15 +451,15 @@
               他们真正理解了我们想要的风格，并将其完美呈现。
               婚礼当天我完全没有任何压力，只是纯粹地享受每一刻。
             </p>
-            <p class="testimonial-card__author">Sophie & Liam</p>
-            <p class="testimonial-card__event">Napa Valley Wedding · 2024</p>
+            <p class="testimonial-card__author">Charlotte & Alexander</p>
+            <p class="testimonial-card__event">Lake Como Wedding · 2024</p>
           </div>
 
           <div class="testimonial-card">
             <div class="testimonial-card__stars">★ ★ ★ ★ ★</div>
             <p class="testimonial-card__quote" data-i18n="testimonials.t3.quote">
               作为一场跨文化婚礼的策划者，他们展现了非凡的文化敏感度和专业素养。
-              将中日两种传统元素完美融合，创造出一场令所有来宾都感动落泪的婚礼。
+              将东方侘寂与现代高级审美完美融合，创造出一场令所有来宾都感动落泪的婚礼。
               我们永远感激 Rosé & Bloom。
             </p>
             <p class="testimonial-card__author">Yuki & Haruto</p>
@@ -433,12 +469,12 @@
           <div class="testimonial-card">
             <div class="testimonial-card__stars">★ ★ ★ ★ ★</div>
             <p class="testimonial-card__quote" data-i18n="testimonials.t4.quote">
-              我们的巴黎婚礼简直就像一场电影。每一个场景转换都恰到好处，
-              从塞纳河畔的香槟敬酒到城堡中的晚宴，一切都如梦如幻。
+              我们的巴黎古堡婚礼简直就像一场电影。每一个场景转换都恰到好处，
+              从法式花园香槟敬酒到镀金大厅的晚宴，一切都如梦如幻。
               他们不仅是策划师，更是真正的艺术家。
             </p>
-            <p class="testimonial-card__author">Alexandra & William</p>
-            <p class="testimonial-card__event">Paris Wedding · 2023</p>
+            <p class="testimonial-card__author">Sophie & Arthur</p>
+            <p class="testimonial-card__event">Château de Villette Wedding · 2024</p>
           </div>
         </div>
 
@@ -494,7 +530,7 @@
 
           <div class="contact__detail">
             <span class="contact__detail-icon">✉</span>
-            <span>hello@roseandbloom.com</span>
+            <span>concierge@eukaevents.com</span>
           </div>
           <div class="contact__detail">
             <span class="contact__detail-icon">☎</span>
@@ -502,7 +538,7 @@
           </div>
           <div class="contact__detail">
             <span class="contact__detail-icon">◎</span>
-            <span>San Francisco · Paris · Tokyo</span>
+            <span>Amalfi Coast · Paris · San Francisco · Kyoto</span>
           </div>
 
           <div class="contact__social">
@@ -610,18 +646,19 @@
           <h4 class="footer__heading" data-i18n="footer.quickLinks">快速链接</h4>
           <a href="#about" class="footer__link" data-i18n="footer.quickLinks.about">关于我们</a>
           <a href="#services" class="footer__link" data-i18n="footer.quickLinks.services">服务项目</a>
-          <a href="#portfolio" class="footer__link" data-i18n="footer.quickLinks.portfolio">作品展示</a>
+          <a href="#destinations" class="footer__link" data-i18n="footer.quickLinks.destinations">全球目的地</a>
+          <a href="#portfolio" class="footer__link" data-i18n="footer.quickLinks.portfolio">精选作品</a>
           <a href="#testimonials" class="footer__link" data-i18n="footer.quickLinks.testimonials">客户评价</a>
           <a href="#contact" class="footer__link" data-i18n="footer.quickLinks.contact">联系我们</a>
         </div>
 
         <div>
           <h4 class="footer__heading" data-i18n="footer.locations">服务地区</h4>
-          <span class="footer__link" data-i18n="footer.locations.sf">旧金山 · 湾区</span>
-          <span class="footer__link" data-i18n="footer.locations.la">洛杉矶</span>
-          <span class="footer__link" data-i18n="footer.locations.hawaii">夏威夷</span>
-          <span class="footer__link" data-i18n="footer.locations.paris">巴黎 · 法国</span>
-          <span class="footer__link" data-i18n="footer.locations.tokyo">东京 · 京都</span>
+          <span class="footer__link" data-i18n="footer.locations.sf">阿马尔菲 · 意大利</span>
+          <span class="footer__link" data-i18n="footer.locations.la">科莫湖 · 贝拉焦</span>
+          <span class="footer__link" data-i18n="footer.locations.hawaii">巴黎 · 法国古堡</span>
+          <span class="footer__link" data-i18n="footer.locations.paris">圣托里尼 · 爱琴海</span>
+          <span class="footer__link" data-i18n="footer.locations.tokyo">京都 · 东京</span>
           <span class="footer__link" data-i18n="footer.locations.global">全球目的地婚礼</span>
         </div>
 
@@ -636,27 +673,61 @@
       </div>
 
       <div class="footer__bottom">
-        <p>© 2024 Rosé & Bloom Events. All rights reserved.</p>
+        <p>© 2026 Rosé & Bloom Events. All rights reserved. Powered by Euka Events.</p>
         <div class="footer__bottom-links">
           <a href="#" class="footer__link" data-i18n="footer.privacy">隐私政策</a>
           <a href="#" class="footer__link" data-i18n="footer.terms">服务条款</a>
+          <a href="admin.html" class="footer__link" style="color: var(--color-accent); font-weight: 500;" title="CMS Admin (Ctrl+Shift+A)">⚙️ 后台管理</a>
         </div>
       </div>
     </div>
   </footer>
 
   <!-- ============================================================
-       LIGHTBOX
+       CASE DETAIL MODAL (FIXED HERO & PIX SMART AUTO-LAYOUT GALLERY)
+       ============================================================ -->
+  <div class="case-modal" id="case-modal" role="dialog" aria-modal="true">
+    <div class="case-modal__backdrop"></div>
+    <div class="case-modal__window">
+      <button class="case-modal__close" aria-label="Close story">
+        <span>✕</span>
+        <span class="case-modal__close-text" data-i18n="gallery.close">关闭</span>
+      </button>
+      <div class="case-modal__body">
+        <!-- Rendered dynamically by PortfolioManager -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       DESTINATION GUIDE MODAL
+       ============================================================ -->
+  <div class="dest-modal" id="destination-modal" role="dialog" aria-modal="true">
+    <div class="dest-modal__backdrop"></div>
+    <div class="dest-modal__window">
+      <button class="dest-modal__close" aria-label="Close guide">
+        <span>✕</span>
+      </button>
+      <div class="dest-modal__body">
+        <!-- Rendered dynamically by DestinationsManager -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       LIGHTBOX (FULLSCREEN PHOTO VIEWER)
        ============================================================ -->
   <div class="lightbox" id="lightbox">
     <button class="lightbox__close" aria-label="Close lightbox">✕</button>
     <button class="lightbox__nav lightbox__nav--prev" aria-label="Previous image">‹</button>
     <button class="lightbox__nav lightbox__nav--next" aria-label="Next image">›</button>
-    <img src="" alt="Gallery image" class="lightbox__image" />
+    <div class="lightbox__container">
+      <img src="" alt="Gallery full size" class="lightbox__image" />
+    </div>
   </div>
 
   <!-- JavaScript -->
-  <script src="i18n.js?v=2"></script>
-  <script src="main.js?v=2"></script>
+  <script src="i18n.js?v=3"></script>
+  <script src="main.js?v=3"></script>
 </body>
 </html>

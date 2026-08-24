@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Euka Events — 后台内容管理系统 (CMS)</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Admin Stylesheet -->
+  <link rel="stylesheet" href="admin.css" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>" />
+</head>
+<body>
+
+  <!-- ============================================================
+       1. AUTH / LOGIN SCREEN
+       ============================================================ -->
+  <div class="auth-screen" id="auth-screen">
+    <div class="auth-card">
+      <div class="auth-card__header">
+        <span class="auth-card__logo">Rosé & Bloom</span>
+        <h1 class="auth-card__title">CMS 内容管理系统</h1>
+        <p class="auth-card__subtitle">请输入管理员密钥解锁网站后台控制台</p>
+      </div>
+
+      <form class="auth-form" id="auth-form">
+        <div class="form-group">
+          <label class="form-label" for="admin-secret">管理员密钥 (Admin Key)</label>
+          <div class="auth-input-wrapper">
+            <input 
+              type="password" 
+              id="admin-secret" 
+              class="form-input" 
+              placeholder="请输入管理员访问密钥" 
+              required 
+              autocomplete="current-password"
+            />
+            <button type="button" class="auth-eye-btn" id="toggle-secret" aria-label="Toggle password visibility">👁️</button>
+          </div>
+        </div>
+
+        <button type="submit" class="admin-btn admin-btn--primary admin-btn--full">
+          <span>验证并登录后台</span>
+          <span class="admin-btn__arrow">→</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       2. MAIN ADMIN DASHBOARD
+       ============================================================ -->
+  <div class="admin-layout" id="admin-layout" style="display: none;">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="admin-sidebar">
+      <div class="admin-sidebar__header">
+        <span class="sidebar-logo__main">Rosé & Bloom</span>
+        <span class="sidebar-logo__sub">CMS Controller</span>
+      </div>
+
+      <nav class="admin-nav">
+        <button class="nav-item active" data-tab="dashboard">
+          <span class="nav-item__icon">📊</span>
+          <span class="nav-item__text">控制台概览</span>
+        </button>
+        <button class="nav-item" data-tab="settings">
+          <span class="nav-item__icon">⚙️</span>
+          <span class="nav-item__text">网站基础配置</span>
+        </button>
+        <button class="nav-item" data-tab="portfolio">
+          <span class="nav-item__icon">💍</span>
+          <span class="nav-item__text">作品集管理 (3x2)</span>
+        </button>
+        <button class="nav-item" data-tab="destinations">
+          <span class="nav-item__icon">🌍</span>
+          <span class="nav-item__text">目的地与地图</span>
+        </button>
+        <button class="nav-item" data-tab="media">
+          <span class="nav-item__icon">🖼️</span>
+          <span class="nav-item__text">R2 媒体存储库</span>
+        </button>
+        <button class="nav-item" data-tab="database">
+          <span class="nav-item__icon">💾</span>
+          <span class="nav-item__text">D1 数据库与同步</span>
+        </button>
+      </nav>
+
+      <div class="admin-sidebar__footer">
+        <a href="index.html" target="_blank" class="sidebar-footer__link">
+          <span>🌐 查看前台官网</span>
+          <span>↗</span>
+        </a>
+        <button class="sidebar-footer__logout" id="logout-btn">
+          <span>🚪 退出登录</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="admin-main">
+      
+      <!-- Top Status Bar -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <h2 class="topbar-title" id="page-title">控制台概览</h2>
+        </div>
+        <div class="topbar-right">
+          <span class="status-badge status-badge--online">
+            <span class="status-dot"></span>
+            Cloudflare D1 & R2 Ready
+          </span>
+          <a href="index.html" target="_blank" class="admin-btn admin-btn--outline admin-btn--sm">
+            预览网站 ↗
+          </a>
+        </div>
+      </header>
+
+      <div class="admin-content-container">
+        
+        <!-- Tab 1: Dashboard -->
+        <section class="tab-panel active" id="tab-dashboard">
+          <div class="dashboard-stats-grid">
+            <div class="stat-card">
+              <span class="stat-card__icon">💍</span>
+              <div class="stat-card__info">
+                <span class="stat-card__number" id="stat-portfolio-count">9</span>
+                <span class="stat-card__label">作品案例总数</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-card__icon">🌍</span>
+              <div class="stat-card__info">
+                <span class="stat-card__number" id="stat-dest-count">8</span>
+                <span class="stat-card__label">精选全球目的地</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-card__icon">🖼️</span>
+              <div class="stat-card__info">
+                <span class="stat-card__number" id="stat-media-count">64</span>
+                <span class="stat-card__label">R2 高清图片总数</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-card__icon">⚡</span>
+              <div class="stat-card__info">
+                <span class="stat-card__number">15 Years</span>
+                <span class="stat-card__label">SSL 证书有效期</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-actions-grid">
+            <div class="action-card" onclick="AdminApp.switchTab('portfolio'); AdminApp.openCaseModal();">
+              <span class="action-card__icon">➕</span>
+              <h3>新增婚礼案例</h3>
+              <p>上传高清作品照片至 R2，自动生成 Pix 智能相册排版</p>
+            </div>
+            <div class="action-card" onclick="AdminApp.switchTab('destinations'); AdminApp.openDestModal();">
+              <span class="action-card__icon">📍</span>
+              <h3>新增目的地</h3>
+              <p>标注交互式地图 Pin 坐标，添加精选场地与筹备指南</p>
+            </div>
+            <div class="action-card" onclick="AdminApp.switchTab('settings');">
+              <span class="action-card__icon">✏️</span>
+              <h3>修改联系方式与标题</h3>
+              <p>修改全站品牌名称、咨询邮箱、电话与社交媒体信息</p>
+            </div>
+            <div class="action-card" onclick="AdminApp.switchTab('media');">
+              <span class="action-card__icon">☁️</span>
+              <h3>批量上传图片到 R2</h3>
+              <p>拖拽上传照片到 Cloudflare R2，快速获取全球加速链接</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 2: Site Settings -->
+        <section class="tab-panel" id="tab-settings">
+          <div class="admin-card">
+            <div class="admin-card__header">
+              <h3>全站品牌与联系方式配置</h3>
+              <p>修改的内容将实时保存在 Cloudflare D1 数据库中，前台即刻生效</p>
+            </div>
+
+            <form id="settings-form" class="settings-form">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label class="form-label">品牌名称 (中文)</label>
+                  <input type="text" name="site_name_zh" class="form-input" value="Rosé & Bloom Events" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">品牌名称 (English)</label>
+                  <input type="text" name="site_name_en" class="form-input" value="Rosé & Bloom Events" />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">咨询联系邮箱 (Contact Email)</label>
+                  <input type="email" name="contact_email" class="form-input" value="concierge@eukaevents.com" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">咨询联系电话 (Contact Phone)</label>
+                  <input type="text" name="contact_phone" class="form-input" value="+1 (415) 888-6688" />
+                </div>
+
+                <div class="form-group full-width">
+                  <label class="form-label">服务地区/办公室 (中文)</label>
+                  <input type="text" name="contact_address_zh" class="form-input" value="旧金山 · 巴黎 · 东京 · 阿马尔菲海岸" />
+                </div>
+                <div class="form-group full-width">
+                  <label class="form-label">服务地区/办公室 (English)</label>
+                  <input type="text" name="contact_address_en" class="form-input" value="Amalfi Coast · Paris · San Francisco · Kyoto" />
+                </div>
+
+                <div class="form-group full-width">
+                  <label class="form-label">Hero 顶部副标题 (中文)</label>
+                  <input type="text" name="hero_subtitle_zh" class="form-input" value="将每一段爱情故事，编织成永恒的璀璨记忆" />
+                </div>
+                <div class="form-group full-width">
+                  <label class="form-label">Hero 顶部副标题 (English)</label>
+                  <input type="text" name="hero_subtitle_en" class="form-input" value="Weaving every love story into an eternal, radiant memory" />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">Instagram 链接</label>
+                  <input type="text" name="social_instagram" class="form-input" value="https://instagram.com/eukaevents" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">小红书账号 / 链接</label>
+                  <input type="text" name="social_xiaohongshu" class="form-input" value="EukaEvents" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">微信公众号</label>
+                  <input type="text" name="social_wechat" class="form-input" value="EukaEventsOfficial" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Cloudflare R2 公共图片域名</label>
+                  <input type="text" name="r2_public_domain" class="form-input" value="https://pub-r2.eukaevents.com" placeholder="https://pub-xxxx.r2.dev" />
+                </div>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="admin-btn admin-btn--primary">
+                  <span>保存全站配置到 D1</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Tab 3: Portfolio Management -->
+        <section class="tab-panel" id="tab-portfolio">
+          <div class="panel-header">
+            <div>
+              <h3>作品集婚礼案例管理</h3>
+              <p>前台以 3×2 正方形网格展示，点击进入 Pix 智能相册排版案例详情</p>
+            </div>
+            <button class="admin-btn admin-btn--primary" onclick="AdminApp.openCaseModal()">
+              <span>➕ 新建案例</span>
+            </button>
+          </div>
+
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th width="80">封面</th>
+                  <th>新人与标题</th>
+                  <th>区域分类</th>
+                  <th>地点与场地</th>
+                  <th>日期 / 季节</th>
+                  <th>照片数</th>
+                  <th width="140">操作</th>
+                </tr>
+              </thead>
+              <tbody id="portfolio-table-body">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Tab 4: Destinations Management -->
+        <section class="tab-panel" id="tab-destinations">
+          <div class="panel-header">
+            <div>
+              <h3>全球婚礼目的地管理</h3>
+              <p>配置交互式地图 Sized Pin 坐标、One&Only 风格卡片及推荐场地</p>
+            </div>
+            <button class="admin-btn admin-btn--primary" onclick="AdminApp.openDestModal()">
+              <span>➕ 新建目的地</span>
+            </button>
+          </div>
+
+          <div class="admin-table-wrapper">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th width="80">图片</th>
+                  <th>目的地名称</th>
+                  <th>区域</th>
+                  <th>精选场地数</th>
+                  <th>地图坐标 (X, Y)</th>
+                  <th>最佳季节</th>
+                  <th width="140">操作</th>
+                </tr>
+              </thead>
+              <tbody id="destinations-table-body">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Tab 5: Media & R2 Storage -->
+        <section class="tab-panel" id="tab-media">
+          <div class="admin-card">
+            <div class="admin-card__header">
+              <h3>Cloudflare R2 对象存储媒体库</h3>
+              <p>支持将婚礼高清图批量直传至 R2 存储桶，自动生成公共 CDN 访问链接</p>
+            </div>
+
+            <!-- Drag & Drop Uploader -->
+            <div class="upload-dropzone" id="r2-dropzone">
+              <input type="file" id="r2-file-input" multiple accept="image/*" style="display: none;" />
+              <div class="dropzone-content">
+                <span class="dropzone-icon">☁️</span>
+                <h4>点击或拖拽图片至此处上传到 Cloudflare R2</h4>
+                <p>支持 JPG, PNG, WEBP, AVIF 等格式，单张图片建议 5MB 以内</p>
+                <button type="button" class="admin-btn admin-btn--outline admin-btn--sm" onclick="document.getElementById('r2-file-input').click()">
+                  选择本地图片
+                </button>
+              </div>
+              <div class="upload-progress-bar" id="upload-progress" style="display: none;">
+                <div class="progress-fill" id="progress-fill"></div>
+              </div>
+            </div>
+
+            <!-- Media Grid -->
+            <div class="media-gallery-grid" id="media-gallery-grid">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 6: Database & Backup -->
+        <section class="tab-panel" id="tab-database">
+          <div class="admin-card">
+            <div class="admin-card__header">
+              <h3>Cloudflare D1 数据库与本地同步</h3>
+              <p>导出数据备份 JSON，或将最新修改一键同步到 Cloudflare D1 生产数据库</p>
+            </div>
+
+            <div class="db-sync-grid">
+              <div class="db-sync-box">
+                <h4>📥 导出备份数据</h4>
+                <p>将当前全站配置、作品集及目的地数据导出为完整 JSON 文件</p>
+                <button class="admin-btn admin-btn--outline" onclick="AdminApp.exportDataJson()">
+                  下载备份 JSON 文件
+                </button>
+              </div>
+
+              <div class="db-sync-box">
+                <h4>📤 恢复 / 导入数据</h4>
+                <p>从本地 JSON 备份文件中恢复数据到 CMS 系统</p>
+                <input type="file" id="import-json-input" accept=".json" style="display: none;" onchange="AdminApp.importDataJson(event)" />
+                <button class="admin-btn admin-btn--outline" onclick="document.getElementById('import-json-input').click()">
+                  选择备份文件导入
+                </button>
+              </div>
+
+              <div class="db-sync-box full-width">
+                <h4>⚡ Cloudflare D1 & R2 绑定状态</h4>
+                <div class="d1-code-preview">
+                  <pre><code>-- 在 Cloudflare CLI 中初始化 D1 数据库：
+npx wrangler d1 create eukaevents-db
+npx wrangler d1 execute eukaevents-db --file=./schema.sql
+npx wrangler r2 bucket create eukaevents-media</code></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ============================================================
+       3. CASE EDIT MODAL
+       ============================================================ -->
+  <div class="modal-overlay" id="case-edit-modal">
+    <div class="modal-window modal-window--large">
+      <div class="modal-header">
+        <h3 id="case-modal-title">编辑婚礼案例</h3>
+        <button class="modal-close" onclick="AdminApp.closeCaseModal()">✕</button>
+      </div>
+
+      <form id="case-edit-form" class="modal-form">
+        <input type="hidden" name="id" id="case-id" />
+
+        <div class="form-tabs">
+          <button type="button" class="form-tab-btn active" data-form-tab="basic">基础信息</button>
+          <button type="button" class="form-tab-btn" data-form-tab="story">故事与团队</button>
+          <button type="button" class="form-tab-btn" data-form-tab="photos">Pix 相册多图 (R2)</button>
+        </div>
+
+        <!-- Sub-Tab 1: Basic Info -->
+        <div class="form-tab-panel active" id="form-tab-basic">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">新人姓名 (Couple Names) *</label>
+              <input type="text" name="couple" class="form-input" placeholder="e.g. Emily & James" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">区域分类 (Category) *</label>
+              <select name="category" class="form-input">
+                <option value="italy">意大利 (Italy)</option>
+                <option value="france">法国 (France)</option>
+                <option value="greece">希腊 (Greece)</option>
+                <option value="asia">亚太地区 (Asia)</option>
+                <option value="americas">北美地区 (Americas)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">案例标题 (中文) *</label>
+              <input type="text" name="title_zh" class="form-input" placeholder="e.g. 阿马尔菲修道院黑白极简奢华婚礼" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label">案例标题 (English) *</label>
+              <input type="text" name="title_en" class="form-input" placeholder="e.g. Monochrome Elegance at an Amalfi Convento" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">举办地点 (中文)</label>
+              <input type="text" name="location_zh" class="form-input" placeholder="e.g. 阿马尔菲海岸 · 意大利" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">举办地点 (English)</label>
+              <input type="text" name="location_en" class="form-input" placeholder="e.g. Amalfi Coast, Italy" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">场地名称 (中文)</label>
+              <input type="text" name="venue_zh" class="form-input" placeholder="e.g. Anantara Convento di Amalfi" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">场地名称 (English)</label>
+              <input type="text" name="venue_en" class="form-input" placeholder="e.g. Anantara Convento di Amalfi" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">婚礼日期 (Date)</label>
+              <input type="text" name="date" class="form-input" placeholder="2024.06.18" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">季节/年份标签</label>
+              <input type="text" name="season_zh" class="form-input" placeholder="初夏 / 2024" />
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">封面正方形图片 URL (Cover Image)</label>
+              <div class="input-with-upload">
+                <input type="text" name="coverImage" id="case-cover-input" class="form-input" placeholder="https://..." required />
+                <button type="button" class="admin-btn admin-btn--outline admin-btn--sm" onclick="AdminApp.triggerUploadFor('case-cover-input')">上传到 R2</button>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="form-label">案例首图宽幅 URL (Hero Image)</label>
+              <div class="input-with-upload">
+                <input type="text" name="heroImage" id="case-hero-input" class="form-input" placeholder="https://..." required />
+                <button type="button" class="admin-btn admin-btn--outline admin-btn--sm" onclick="AdminApp.triggerUploadFor('case-hero-input')">上传到 R2</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-Tab 2: Story & Credits -->
+        <div class="form-tab-panel" id="form-tab-story">
+          <div class="form-group">
+            <label class="form-label">设计理念与爱情故事 (中文)</label>
+            <textarea name="story_zh" class="form-textarea" rows="4" placeholder="讲述这场婚礼的设计细节、氛围与故事..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">设计理念与爱情故事 (English)</label>
+            <textarea name="story_en" class="form-textarea" rows="4" placeholder="Editorial narrative of this wedding..."></textarea>
+          </div>
+
+          <h4 class="subheading">鸣谢团队与供应商信息</h4>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">婚礼策划 (Planner)</label>
+              <input type="text" name="credit_planner" class="form-input" value="Rosé & Bloom Events" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">婚礼摄影 (Photography)</label>
+              <input type="text" name="credit_photo" class="form-input" placeholder="e.g. Matteo Coltro Photography" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">花艺设计 (Floral Design)</label>
+              <input type="text" name="credit_floral" class="form-input" placeholder="e.g. La Rosa Canina Firenze" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">摄像录制 (Cinematography)</label>
+              <input type="text" name="credit_video" class="form-input" placeholder="e.g. Moon & Sea Cinema" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">婚纱礼服 (Bridal Gown)</label>
+              <input type="text" name="credit_gown" class="form-input" placeholder="e.g. Monique Lhuillier Couture" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">纸品文具 (Stationery)</label>
+              <input type="text" name="credit_stationery" class="form-input" placeholder="e.g. Letter & Ink Calligraphy" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Sub-Tab 3: Photos Gallery (R2) -->
+        <div class="form-tab-panel" id="form-tab-photos">
+          <div class="gallery-uploader-box">
+            <div class="gallery-uploader-header">
+              <div>
+                <h4>Pix 智能相册照片列表</h4>
+                <p>已添加的照片将自动美化排版为单图、双联、三联杂志风格</p>
+              </div>
+              <button type="button" class="admin-btn admin-btn--outline admin-btn--sm" onclick="document.getElementById('case-gallery-file-input').click()">
+                ➕ 批量上传照片到 R2
+              </button>
+              <input type="file" id="case-gallery-file-input" multiple accept="image/*" style="display: none;" onchange="AdminApp.handleCasePhotosUpload(event)" />
+            </div>
+
+            <div class="case-photos-list" id="case-photos-list">
+              <!-- Dynamically rendered photo items with delete/reorder -->
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="admin-btn admin-btn--outline" onclick="AdminApp.closeCaseModal()">取消</button>
+          <button type="submit" class="admin-btn admin-btn--primary">保存案例到 D1</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       4. DESTINATION EDIT MODAL
+       ============================================================ -->
+  <div class="modal-overlay" id="dest-edit-modal">
+    <div class="modal-window">
+      <div class="modal-header">
+        <h3 id="dest-modal-title">编辑目的地</h3>
+        <button class="modal-close" onclick="AdminApp.closeDestModal()">✕</button>
+      </div>
+
+      <form id="dest-edit-form" class="modal-form">
+        <input type="hidden" name="id" id="dest-id" />
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">目的地名称 (中文) *</label>
+            <input type="text" name="name_zh" class="form-input" placeholder="e.g. 阿马尔菲海岸 & 卡普里岛" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">目的地名称 (English) *</label>
+            <input type="text" name="name_en" class="form-input" placeholder="e.g. Amalfi Coast & Capri" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">国家 (中文) *</label>
+            <input type="text" name="country_zh" class="form-input" placeholder="e.g. 意大利" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">国家 (English) *</label>
+            <input type="text" name="country_en" class="form-input" placeholder="e.g. Italy" required />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">所属区域 *</label>
+            <select name="region" class="form-input">
+              <option value="italy">意大利 (Italy)</option>
+              <option value="france">法国 (France)</option>
+              <option value="mediterranean">地中海 (Mediterranean)</option>
+              <option value="asia">亚太地区 (Asia)</option>
+              <option value="americas">美洲 (Americas)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">精选场地数量</label>
+            <input type="number" name="venueCount" class="form-input" value="12" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">地图 X 坐标 (0-100%)</label>
+            <input type="number" step="0.1" name="map_x" class="form-input" value="52.8" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">地图 Y 坐标 (0-100%)</label>
+            <input type="number" step="0.1" name="map_y" class="form-input" value="39.5" />
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">封面图片 URL (Cover Image)</label>
+            <div class="input-with-upload">
+              <input type="text" name="coverImage" id="dest-cover-input" class="form-input" placeholder="https://..." required />
+              <button type="button" class="admin-btn admin-btn--outline admin-btn--sm" onclick="AdminApp.triggerUploadFor('dest-cover-input')">上传到 R2</button>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label class="form-label">简短描述 (中文)</label>
+            <textarea name="description_zh" class="form-textarea" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="admin-btn admin-btn--outline" onclick="AdminApp.closeDestModal()">取消</button>
+          <button type="submit" class="admin-btn admin-btn--primary">保存目的地到 D1</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Hidden global file uploader trigger -->
+  <input type="file" id="global-r2-uploader" accept="image/*" style="display: none;" />
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="admin.js"></script>
+</body>
+</html>

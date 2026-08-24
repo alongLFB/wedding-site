@@ -9,6 +9,7 @@ var translations = {
     "nav.home": "首页",
     "nav.about": "关于我们",
     "nav.services": "服务",
+    "nav.destinations": "目的地",
     "nav.portfolio": "作品集",
     "nav.testimonials": "客户评价",
     "nav.contact": "联系我们",
@@ -25,7 +26,7 @@ var translations = {
     "about.text3": "我们坚持每个周末只承接一场婚礼，确保每一位客户都能获得最专注、最贴心的个性化服务体验。",
 
     /* ---- Banner ---- */
-    "banner.quote": "\u201c婚礼不仅仅是一天的庆典，<br/>更是两个灵魂交汇的永恒诗篇。\u201d",
+    "banner.quote": "“婚礼不仅仅是一天的庆典，<br/>更是两个灵魂交汇的永恒诗篇。”",
     "banner.author": "— Rosé & Bloom Philosophy",
 
     /* ---- Services ---- */
@@ -73,10 +74,64 @@ var translations = {
     "process.step4.title": "完美呈现",
     "process.step4.text": "婚礼当天，我们的专业团队将全程在场，从布置到撤场，让您和家人尽情享受这个最珍贵的时刻。",
 
-    /* ---- Portfolio ---- */
+    /* ---- Destinations Section ---- */
+    "destinations.label": "Worldwide Venues",
+    "destinations.title": "全球精选婚礼目的地",
+    "destinations.description": "从意大利悬崖古堡到法国文艺复兴庄园，从地中海私属岛屿到京都古老神社，我们为您在全球最诗意的秘境开启爱情篇章。",
+    "destinations.banner.tagline": "Exclusive Worldwide Destination Weddings",
+    "destinations.banner.title": "世界级奢华婚礼目的地",
+    "destinations.banner.desc": "无论是托斯卡纳的日光倾城，还是科莫湖畔的优雅静谧，我们为您严选全球顶级场地，提供一站式跨国筹备与贵宾接待体验。",
+    "destinations.map.title": "交互式目的地探索地图",
+    "destinations.map.subtitle": "点击地图上的高光标记，探索不同地区的私属场地与深度策划指南",
+    "destinations.map.hint": "✦ 悬停查看亮点 · 点击定位场地列表",
+    "destinations.filter.all": "全部地区",
+    "destinations.filter.italy": "意大利 (Italy)",
+    "destinations.filter.france": "法国 (France)",
+    "destinations.filter.mediterranean": "地中海 (Mediterranean)",
+    "destinations.filter.asia": "亚太地区 (Asia-Pacific)",
+    "destinations.filter.americas": "美洲 (Americas)",
+    "destinations.card.venues": "处精选场地",
+    "destinations.card.capacity": "宾客容量",
+    "destinations.card.season": "最佳季节",
+    "destinations.card.setting": "地理环境",
+    "destinations.card.btn": "探索目的地与场地",
+    "destinations.modal.topVenues": "推荐顶级场地",
+    "destinations.modal.guide": "目的地筹备指南",
+    "destinations.modal.weather": "气候与最佳月份",
+    "destinations.modal.logistics": "交通与宾客接待",
+    "destinations.modal.legal": "仪式与注册流程",
+    "destinations.modal.inquire": "咨询该目的地婚礼",
+
+    /* ---- Portfolio Section ---- */
     "portfolio.label": "Our Portfolio",
-    "portfolio.title": "精选作品",
-    "portfolio.description": "每一场婚礼都是一件独特的艺术品。以下是我们精心策划的部分婚礼作品展示。",
+    "portfolio.title": "精选真实婚礼案例",
+    "portfolio.description": "每一场婚礼都是一首专属定制的视觉诗篇。正方形 3×2 精选网格，点击任意案例探索全画幅画廊与背后故事。",
+    "portfolio.filter.all": "全部案例",
+    "portfolio.filter.italy": "意大利 (Italy)",
+    "portfolio.filter.france": "法国 (France)",
+    "portfolio.filter.greece": "希腊 (Greece)",
+    "portfolio.filter.asia": "亚太地区 (Asia)",
+    "portfolio.filter.americas": "北美地区 (Americas)",
+    "portfolio.card.view": "探索完整故事",
+    "portfolio.pagination.prev": "上一页",
+    "portfolio.pagination.next": "下一页",
+    "portfolio.pagination.page": "第 {page} 页 / 共 {total} 页",
+
+    /* ---- Case Gallery Modal ---- */
+    "gallery.back": "← 返回全部案例",
+    "gallery.prev": "← 上一个案例",
+    "gallery.next": "下一个案例 →",
+    "gallery.storyTitle": "爱情故事与设计理念",
+    "gallery.creditsTitle": "婚礼鸣谢团队",
+    "gallery.credits.planner": "婚礼策划与设计",
+    "gallery.credits.photo": "摄影师",
+    "gallery.credits.floral": "花艺设计",
+    "gallery.credits.venue": "婚礼场地",
+    "gallery.credits.video": "摄像录制",
+    "gallery.credits.gown": "婚纱礼服",
+    "gallery.credits.stationery": "定制纸品文具",
+    "gallery.autoLayoutNotice": "✦ 杂志风智能排版相册 · 点击任意图片全屏高清浏览",
+    "gallery.close": "关闭 (Esc)",
 
     /* ---- Testimonials ---- */
     "testimonials.label": "Testimonials",
@@ -138,7 +193,8 @@ var translations = {
     "footer.quickLinks": "快速链接",
     "footer.quickLinks.about": "关于我们",
     "footer.quickLinks.services": "服务项目",
-    "footer.quickLinks.portfolio": "作品展示",
+    "footer.quickLinks.destinations": "全球目的地",
+    "footer.quickLinks.portfolio": "精选作品",
     "footer.quickLinks.testimonials": "客户评价",
     "footer.quickLinks.contact": "联系我们",
     "footer.locations": "服务地区",
@@ -157,7 +213,7 @@ var translations = {
 
     /* ---- Form Feedback ---- */
     "form.sending": "发送中...",
-    "form.sent": "✓ 已发送！",
+    "form.sent": "✓ 已发送！"
   },
 
   en: {
@@ -165,6 +221,7 @@ var translations = {
     "nav.home": "Home",
     "nav.about": "About",
     "nav.services": "Services",
+    "nav.destinations": "Destinations",
     "nav.portfolio": "Portfolio",
     "nav.testimonials": "Testimonials",
     "nav.contact": "Contact",
@@ -181,7 +238,7 @@ var translations = {
     "about.text3": "We commit to hosting only one wedding per weekend, ensuring every client receives the most attentive and personalized service experience possible.",
 
     /* ---- Banner ---- */
-    "banner.quote": "\u201cA wedding is not merely a day\u2019s celebration,<br/>but an eternal poem where two souls converge.\u201d",
+    "banner.quote": "“A wedding is not merely a day’s celebration,<br/>but an eternal poem where two souls converge.”",
     "banner.author": "— Rosé & Bloom Philosophy",
 
     /* ---- Services ---- */
@@ -229,10 +286,64 @@ var translations = {
     "process.step4.title": "Flawless Execution",
     "process.step4.text": "On your wedding day, our professional team will be present throughout — from setup to teardown — so you and your family can fully savor every precious moment.",
 
-    /* ---- Portfolio ---- */
+    /* ---- Destinations Section ---- */
+    "destinations.label": "Worldwide Venues",
+    "destinations.title": "Curated Global Wedding Destinations",
+    "destinations.description": "From clifftop Italian castles to Renaissance French châteaux, from secluded Aegean islands to serene Kyoto shrines, we curate breathtaking sanctuaries worldwide.",
+    "destinations.banner.tagline": "Exclusive Worldwide Destination Weddings",
+    "destinations.banner.title": "World-Class Luxury Wedding Venues",
+    "destinations.banner.desc": "Whether surrounded by the sun-drenched hills of Tuscany or the tranquil waters of Lake Como, we provide comprehensive international scouting, guest hospitality, and seamless logistics.",
+    "destinations.map.title": "Interactive Destination Map",
+    "destinations.map.subtitle": "Click any glowing pin on the map to explore private venues and curated destination guides",
+    "destinations.map.hint": "✦ Hover for preview · Click to filter venues below",
+    "destinations.filter.all": "All Regions",
+    "destinations.filter.italy": "Italy",
+    "destinations.filter.france": "France",
+    "destinations.filter.mediterranean": "Mediterranean",
+    "destinations.filter.asia": "Asia-Pacific",
+    "destinations.filter.americas": "Americas",
+    "destinations.card.venues": "Curated Venues",
+    "destinations.card.capacity": "Capacity",
+    "destinations.card.season": "Best Season",
+    "destinations.card.setting": "Setting",
+    "destinations.card.btn": "Explore Destination Guide",
+    "destinations.modal.topVenues": "Featured Venues",
+    "destinations.modal.guide": "Planning & Destination Guide",
+    "destinations.modal.weather": "Climate & Optimal Months",
+    "destinations.modal.logistics": "Travel & Guest Hospitality",
+    "destinations.modal.legal": "Ceremony & Legal Essentials",
+    "destinations.modal.inquire": "Inquire About This Destination",
+
+    /* ---- Portfolio Section ---- */
     "portfolio.label": "Our Portfolio",
-    "portfolio.title": "Featured Works",
-    "portfolio.description": "Every wedding is a unique work of art. Here are some of our carefully curated wedding showcases.",
+    "portfolio.title": "Curated Real Wedding Stories",
+    "portfolio.description": "Every wedding is an intentional visual poem. Explore our 3×2 square portfolio grid and click any story to discover the editorial gallery.",
+    "portfolio.filter.all": "All Stories",
+    "portfolio.filter.italy": "Italy",
+    "portfolio.filter.france": "France",
+    "portfolio.filter.greece": "Greece",
+    "portfolio.filter.asia": "Asia",
+    "portfolio.filter.americas": "Americas",
+    "portfolio.card.view": "View Story",
+    "portfolio.pagination.prev": "Previous",
+    "portfolio.pagination.next": "Next",
+    "portfolio.pagination.page": "Page {page} of {total}",
+
+    /* ---- Case Gallery Modal ---- */
+    "gallery.back": "← Back to Portfolio",
+    "gallery.prev": "← Previous Story",
+    "gallery.next": "Next Story →",
+    "gallery.storyTitle": "The Story & Design Vision",
+    "gallery.creditsTitle": "Creative Partners & Credits",
+    "gallery.credits.planner": "Planning & Design",
+    "gallery.credits.photo": "Photography",
+    "gallery.credits.floral": "Floral Design",
+    "gallery.credits.venue": "Venue",
+    "gallery.credits.video": "Cinematography",
+    "gallery.credits.gown": "Bridal Gown",
+    "gallery.credits.stationery": "Stationery & Calligraphy",
+    "gallery.autoLayoutNotice": "✦ Editorial Smart Gallery · Click any photograph for full-screen viewer",
+    "gallery.close": "Close (Esc)",
 
     /* ---- Testimonials ---- */
     "testimonials.label": "Testimonials",
@@ -294,6 +405,7 @@ var translations = {
     "footer.quickLinks": "Quick Links",
     "footer.quickLinks.about": "About Us",
     "footer.quickLinks.services": "Services",
+    "footer.quickLinks.destinations": "Destinations",
     "footer.quickLinks.portfolio": "Portfolio",
     "footer.quickLinks.testimonials": "Testimonials",
     "footer.quickLinks.contact": "Contact Us",
@@ -313,7 +425,7 @@ var translations = {
 
     /* ---- Form Feedback ---- */
     "form.sending": "Sending...",
-    "form.sent": "✓ Message Sent!",
+    "form.sent": "✓ Message Sent!"
   }
 };
 
@@ -332,13 +444,20 @@ var I18n = {
     if (saved && translations[saved]) {
       this.currentLang = saved;
     } else {
-      // Auto-detect from browser
       const browserLang = navigator.language || navigator.userLanguage || 'zh';
       this.currentLang = browserLang.startsWith('zh') ? 'zh' : 'en';
     }
 
     this.applyLanguage(this.currentLang);
     this.updateToggleUI();
+  },
+
+  /**
+   * Get translation by key
+   */
+  t(key, fallback = '') {
+    const dict = translations[this.currentLang] || translations.zh;
+    return dict[key] !== undefined ? dict[key] : fallback;
   },
 
   /**
@@ -349,6 +468,9 @@ var I18n = {
     localStorage.setItem('rb-lang', this.currentLang);
     this.applyLanguage(this.currentLang);
     this.updateToggleUI();
+
+    // Dispatch global event for dynamic components to re-render
+    document.dispatchEvent(new CustomEvent('languageChanged', { detail: { lang: this.currentLang } }));
   },
 
   /**
@@ -363,8 +485,8 @@ var I18n = {
 
     // Update page title
     document.title = lang === 'zh'
-      ? 'Rosé & Bloom Events | 高端婚礼策划与设计'
-      : 'Rosé & Bloom Events | Luxury Wedding Planning & Design';
+      ? 'Rosé & Bloom Events | 高端定制婚礼策划与设计 | Euka Events'
+      : 'Rosé & Bloom Events | Luxury Wedding Planning & Design | Euka Events';
 
     // Update meta description
     const metaDesc = document.querySelector('meta[name="description"]');
@@ -401,7 +523,7 @@ var I18n = {
     // Update the "Most Popular" badge via CSS custom property
     document.documentElement.style.setProperty(
       '--popular-text',
-      `"${dict['services.popular']}"`
+      `"${dict['services.popular'] || 'Most Popular'}"`
     );
   },
 
@@ -423,7 +545,7 @@ var I18n = {
 };
 
 /* ----------------------------------------------------------------
-   Bind language toggle buttons via addEventListener (robust fallback)
+   Bind language toggle buttons
    ---------------------------------------------------------------- */
 document.addEventListener('DOMContentLoaded', function() {
   document.querySelectorAll('.lang-toggle').forEach(function(btn) {
