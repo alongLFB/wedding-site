@@ -867,6 +867,27 @@ const AdminApp = {
         this.showToast("上传成功！", "success");
       });
     }
+  },
+
+  async purgeCdnCache() {
+    this.showToast("正在向 Cloudflare 申请全网 CDN 缓存刷新...", "success");
+    try {
+      const res = await fetch(`${API_BASE}/api/purge-cache`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.authToken}`
+        }
+      });
+      const data = await res.json();
+      if (data.success) {
+        this.showToast("⚡ Cloudflare 全球 CDN 边缘缓存已全部刷新！访客已可看到最新内容。", "success");
+      } else {
+        this.showToast("刷新 CDN 缓存失败: " + (data.error || "未知错误"), "error");
+      }
+    } catch (e) {
+      this.showToast("网络异常，无法连接服务端", "error");
+    }
   }
 };
 

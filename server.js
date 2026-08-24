@@ -130,7 +130,38 @@ async function queryD1(sql, params = []) {
       console.warn('Cloudflare D1 REST API query fallback:', err.message);
     }
   }
-  return null;
+// 3.1 Cloudflare CDN Cache Purge Helper
+async function purgeCloudflareCache() {
+  const zoneId = process.env.CLOUDFLARE_ZONE_ID;
+  const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+  const authEmail = process.env.CLOUDFLARE_AUTH_EMAIL || process.env.CLOUDFLARE_EMAIL;
+
+  if (zoneId && apiToken && !zoneId.includes('your_')) {
+    try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (authEmail) {
+        headers['X-Auth-Email'] = authEmail;
+        headers['X-Auth-Key'] = apiToken;
+      } else {
+        headers['Authorization'] = `Bearer ${apiToken}`;
+      }
+
+      const response = await fetch(
+        `https://api.cloudflare.com/client/v4/zones/${zoneId}/purge_cache`,
+        {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ purge_everything: true }),
+        }
+      );
+      const data = await response.json();
+      console.log('[Cloudflare CDN] Purge cache result:', data.success);
+      return data.success;
+    } catch (err) {
+      console.warn('[Cloudflare CDN] Purge cache error:', err.message);
+    }
+  }
+  return false;
 }
 
 // 4. Request Body Buffer Collector
@@ -143,13 +174,17 @@ function getRequestBody(req) {
   });
 }
 
-// CORS & JSON Response Helper
+// CORS & JSON Response Helper (Strict zero-cache for API data)
 function sendJSON(res, data, status = 200) {
   res.writeHead(status, {
     'Content-Type': 'application/json; charset=utf-8',
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Admin-Key',
+    'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+    'Pragma': 'no-cache',
+    'Expires': '0',
+    'Surrogate-Control': 'no-store'
   });
   res.end(JSON.stringify(data));
 }
@@ -275,18 +310,27 @@ const server = http.createServer(async (req, res) => {
     }
 
     // --------------------------------------------------------
+    // Route: Purge CDN Cache
+    // --------------------------------------------------------
+    if (pathname === '/api/purge-cache' && method === 'POST') {
+      const purged = await purgeCloudflareCache();
+      return sendJSON(res, { success: true, purged, message: 'Cloudflare CDN 全网边缘缓存已成功清除' });
+    }
+
+    // --------------------------------------------------------
     // Route: Settings (PUT)
     // --------------------------------------------------------
     if (pathname === '/api/settings' && method === 'PUT') {
       const raw = await getRequestBody(req);
-      const updates = JSON.parse(raw.toString('utf8') || '{}');
+      const updates = parseJSONSafe(raw);
       localStore.settings = { ...localStore.settings, ...updates };
       saveLocalStore();
 
       for (const [k, v] of Object.entries(updates)) {
         await queryD1('INSERT OR REPLACE INTO settings (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)', [k, String(v)]);
       }
-      return sendJSON(res, { success: true, message: 'Settings saved' });
+      purgeCloudflareCache().catch(() => {});
+      return sendJSON(res, { success: true, message: 'Settings saved and CDN cache purged' });
     }
 
     // --------------------------------------------------------
@@ -294,7 +338,7 @@ const server = http.createServer(async (req, res) => {
     // --------------------------------------------------------
     if (pathname === '/api/portfolio' && method === 'POST') {
       const raw = await getRequestBody(req);
-      const p = JSON.parse(raw.toString('utf8') || '{}');
+      const p = parseJSONSafe(raw);
       const id = p.id || 'case-' + Date.now();
       const slug = p.slug || id;
 
@@ -320,7 +364,8 @@ const server = http.createServer(async (req, res) => {
         p.sort_order || 0
       ]);
 
-      return sendJSON(res, { success: true, id, message: 'Case saved' });
+      purgeCloudflareCache().catch(() => {});
+      return sendJSON(res, { success: true, id, message: 'Case saved and CDN cache purged' });
     }
 
     if (pathname.startsWith('/api/portfolio/') && method === 'DELETE') {
@@ -328,7 +373,8 @@ const server = http.createServer(async (req, res) => {
       localStore.portfolio = localStore.portfolio.filter(x => x.id !== id);
       saveLocalStore();
       await queryD1('DELETE FROM portfolio WHERE id = ?', [id]);
-      return sendJSON(res, { success: true, message: 'Case deleted' });
+      purgeCloudflareCache().catch(() => {});
+      return sendJSON(res, { success: true, message: 'Case deleted and CDN cache purged' });
     }
 
     // --------------------------------------------------------
@@ -336,7 +382,7 @@ const server = http.createServer(async (req, res) => {
     // --------------------------------------------------------
     if (pathname === '/api/destinations' && method === 'POST') {
       const raw = await getRequestBody(req);
-      const d = JSON.parse(raw.toString('utf8') || '{}');
+      const d = parseJSONSafe(raw);
       const id = d.id || 'dest-' + Date.now();
 
       const idx = localStore.destinations.findIndex(x => x.id === id);
@@ -365,7 +411,8 @@ const server = http.createServer(async (req, res) => {
         d.sort_order || 0
       ]);
 
-      return sendJSON(res, { success: true, id, message: 'Destination saved' });
+      purgeCloudflareCache().catch(() => {});
+      return sendJSON(res, { success: true, id, message: 'Destination saved and CDN cache purged' });
     }
 
     if (pathname.startsWith('/api/destinations/') && method === 'DELETE') {
@@ -373,7 +420,8 @@ const server = http.createServer(async (req, res) => {
       localStore.destinations = localStore.destinations.filter(x => x.id !== id);
       saveLocalStore();
       await queryD1('DELETE FROM destinations WHERE id = ?', [id]);
-      return sendJSON(res, { success: true, message: 'Destination deleted' });
+      purgeCloudflareCache().catch(() => {});
+      return sendJSON(res, { success: true, message: 'Destination deleted and CDN cache purged' });
     }
 
     // --------------------------------------------------------

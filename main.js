@@ -2027,7 +2027,10 @@ const DataManager = {
 
   async fetchD1Content() {
     try {
-      const res = await fetch(`${window.location.origin}/api/content`);
+      const res = await fetch(`${window.location.origin}/api/content?_t=${Date.now()}`, {
+        cache: "no-store",
+        headers: { "Cache-Control": "no-cache" }
+      });
       if (res.ok) {
         const data = await res.json();
         if (data.success) {
@@ -2046,6 +2049,10 @@ const DataManager = {
             this.cachedSettings = data.settings;
             this.applySettingsToDOM(data.settings);
           }
+          // Refresh visitor local cache snapshot
+          try {
+            localStorage.setItem("euka_cms_data", JSON.stringify(data));
+          } catch (e) {}
         }
       }
     } catch (err) {
