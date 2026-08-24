@@ -148,6 +148,16 @@ function sendJSON(res, data, status = 200) {
   res.end(JSON.stringify(data));
 }
 
+function parseJSONSafe(raw) {
+  if (!raw) return {};
+  try {
+    const str = Buffer.isBuffer(raw) ? raw.toString('utf8') : String(raw);
+    return JSON.parse(str.trim());
+  } catch (e) {
+    return {};
+  }
+}
+
 // 5. Main HTTP Request Handler
 const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
@@ -170,9 +180,10 @@ const server = http.createServer(async (req, res) => {
     // --------------------------------------------------------
     if (pathname === '/api/auth' && method === 'POST') {
       const raw = await getRequestBody(req);
-      const body = JSON.parse(raw.toString('utf8') || '{}');
+      const body = parseJSONSafe(raw);
+      const secret = body.secret || req.headers['x-admin-key'] || parsedUrl.query?.secret || '';
 
-      if (body.secret === ADMIN_SECRET_KEY) {
+      if (secret === ADMIN_SECRET_KEY) {
         const token = signJWT({ role: 'admin', exp: Date.now() + 7 * 24 * 3600 * 1000 });
         return sendJSON(res, { success: true, message: 'Authenticated', token });
       }
