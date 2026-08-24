@@ -35,7 +35,7 @@ function loadEnv() {
 }
 loadEnv();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3030;
 const JWT_SECRET = process.env.JWT_SECRET || 'euka_jwt_fallback_secret_key_2026';
 const ADMIN_SECRET_KEY = process.env.ADMIN_SECRET_KEY || 'eukaevents@2026';
 

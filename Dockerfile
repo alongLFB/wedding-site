@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Set production environment variables
 ENV NODE_ENV=production \
-    PORT=3000
+    PORT=3030
 
 # Copy package descriptors first for caching
 COPY package*.json ./
@@ -21,11 +21,11 @@ COPY . .
 RUN mkdir -p /app/uploads
 
 # Expose default HTTP port
-EXPOSE 3000
+EXPOSE 3030
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/api/content', (r) => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
+  CMD node -e "require('http').get('http://localhost:3030/api/content', (r) => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"
 
 # Start the application
 CMD ["node", "server.js"]
