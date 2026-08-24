@@ -1,0 +1,28 @@
+services:
+  wedding-site:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wedding-site-app
+    restart: always
+    ports:
+      - "127.0.0.1:3000:3000"
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    volumes:
+      - ./uploads:/app/uploads
+      - ./db_fallback.json:/app/db_fallback.json
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/api/content', (r) => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
