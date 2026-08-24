@@ -976,15 +976,20 @@ const PortfolioManager = {
       const location = item.location[lang] || item.location.zh;
       const season = item.season[lang] || item.season.zh;
       const viewText = I18n.t("portfolio.card.view", "View Story");
+      const coverSrc = item.coverThumb || item.coverImage;
+      const coverFull = item.coverImage;
 
       return `
         <article class="portfolio-card reveal reveal--visible" data-id="${item.id}" style="animation-delay: ${index * 0.08}s">
           <div class="portfolio-card__media">
             <img 
-              src="${item.coverImage}" 
+              src="${coverSrc}" 
+              data-full="${coverFull}"
               alt="${title}" 
-              class="portfolio-card__img" 
+              class="portfolio-card__img progressive-img" 
               loading="lazy" 
+              decoding="async"
+              onload="this.classList.add('loaded')"
             />
             <div class="portfolio-card__overlay">
               <span class="portfolio-card__tag">${season}</span>
@@ -1260,9 +1265,20 @@ const PortfolioManager = {
   },
 
   /**
+   * Helper to extract multi-spec image URL
+   */
+  getImageUrl(item, spec = 'medium') {
+    if (!item) return '';
+    if (typeof item === 'string') return item;
+    if (spec === 'thumb') return item.thumb || item.medium || item.src || '';
+    if (spec === 'medium') return item.medium || item.src || item.original || '';
+    if (spec === 'original') return item.original || item.src || item.medium || '';
+    return item.src || '';
+  },
+
+  /**
    * Pix Smart Editorial Auto-Layout Engine:
-   * Automatically groups photos into high-end editorial rhythms without manual labor.
-   * Pattern: Single Panoramic -> Diptych -> Triptych -> Asymmetrical Trio -> Diptych -> Full Bleed.
+   * Automatically groups photos into high-end editorial rhythms with progressive lazy loading.
    */
   generatePixSmartLayout(images) {
     if (!images || !images.length) return "";
@@ -1276,11 +1292,24 @@ const PortfolioManager = {
 
       // Rhythm step 1: Full-width cinematic highlight (1 image)
       if (i === 0 || remaining === 1) {
+        const img = images[i];
+        const medSrc = this.getImageUrl(img, 'medium');
+        const origSrc = this.getImageUrl(img, 'original');
+        const caption = typeof img === 'object' ? img.caption : '';
+
         html += `
           <div class="pix-row pix-row--full reveal">
             <div class="pix-photo pix-photo--full" data-index="${i}">
-              <img src="${images[i].src}" alt="${images[i].caption || ''}" loading="lazy" />
-              ${images[i].caption ? `<span class="pix-photo__caption">${images[i].caption}</span>` : ''}
+              <img 
+                src="${medSrc}" 
+                data-full="${origSrc}" 
+                alt="${caption || ''}" 
+                class="progressive-img" 
+                loading="lazy" 
+                decoding="async" 
+                onload="this.classList.add('loaded')" 
+              />
+              ${caption ? `<span class="pix-photo__caption">${caption}</span>` : ''}
             </div>
           </div>
         `;
@@ -1290,15 +1319,33 @@ const PortfolioManager = {
 
       // Rhythm step 2: Diptych (2 images side by side)
       if (remaining === 2 || (i % 5 === 1)) {
+        const img1 = images[i];
+        const img2 = images[i + 1];
         html += `
           <div class="pix-row pix-row--diptych reveal">
             <div class="pix-photo pix-photo--half" data-index="${i}">
-              <img src="${images[i].src}" alt="${images[i].caption || ''}" loading="lazy" />
-              ${images[i].caption ? `<span class="pix-photo__caption">${images[i].caption}</span>` : ''}
+              <img 
+                src="${this.getImageUrl(img1, 'medium')}" 
+                data-full="${this.getImageUrl(img1, 'original')}" 
+                alt="${img1.caption || ''}" 
+                class="progressive-img" 
+                loading="lazy" 
+                decoding="async" 
+                onload="this.classList.add('loaded')" 
+              />
+              ${img1.caption ? `<span class="pix-photo__caption">${img1.caption}</span>` : ''}
             </div>
             <div class="pix-photo pix-photo--half" data-index="${i + 1}">
-              <img src="${images[i + 1].src}" alt="${images[i + 1].caption || ''}" loading="lazy" />
-              ${images[i + 1].caption ? `<span class="pix-photo__caption">${images[i + 1].caption}</span>` : ''}
+              <img 
+                src="${this.getImageUrl(img2, 'medium')}" 
+                data-full="${this.getImageUrl(img2, 'original')}" 
+                alt="${img2.caption || ''}" 
+                class="progressive-img" 
+                loading="lazy" 
+                decoding="async" 
+                onload="this.classList.add('loaded')" 
+              />
+              ${img2.caption ? `<span class="pix-photo__caption">${img2.caption}</span>` : ''}
             </div>
           </div>
         `;
@@ -1308,19 +1355,46 @@ const PortfolioManager = {
 
       // Rhythm step 3: Triptych (3 images in a row)
       if (remaining >= 3 && (i % 5 === 3)) {
+        const img1 = images[i];
+        const img2 = images[i + 1];
+        const img3 = images[i + 2];
         html += `
           <div class="pix-row pix-row--triptych reveal">
             <div class="pix-photo pix-photo--third" data-index="${i}">
-              <img src="${images[i].src}" alt="${images[i].caption || ''}" loading="lazy" />
-              ${images[i].caption ? `<span class="pix-photo__caption">${images[i].caption}</span>` : ''}
+              <img 
+                src="${this.getImageUrl(img1, 'medium')}" 
+                data-full="${this.getImageUrl(img1, 'original')}" 
+                alt="${img1.caption || ''}" 
+                class="progressive-img" 
+                loading="lazy" 
+                decoding="async" 
+                onload="this.classList.add('loaded')" 
+              />
+              ${img1.caption ? `<span class="pix-photo__caption">${img1.caption}</span>` : ''}
             </div>
             <div class="pix-photo pix-photo--third" data-index="${i + 1}">
-              <img src="${images[i + 1].src}" alt="${images[i + 1].caption || ''}" loading="lazy" />
-              ${images[i + 1].caption ? `<span class="pix-photo__caption">${images[i + 1].caption}</span>` : ''}
+              <img 
+                src="${this.getImageUrl(img2, 'medium')}" 
+                data-full="${this.getImageUrl(img2, 'original')}" 
+                alt="${img2.caption || ''}" 
+                class="progressive-img" 
+                loading="lazy" 
+                decoding="async" 
+                onload="this.classList.add('loaded')" 
+              />
+              ${img2.caption ? `<span class="pix-photo__caption">${img2.caption}</span>` : ''}
             </div>
             <div class="pix-photo pix-photo--third" data-index="${i + 2}">
-              <img src="${images[i + 2].src}" alt="${images[i + 2].caption || ''}" loading="lazy" />
-              ${images[i + 2].caption ? `<span class="pix-photo__caption">${images[i + 2].caption}</span>` : ''}
+              <img 
+                src="${this.getImageUrl(img3, 'medium')}" 
+                data-full="${this.getImageUrl(img3, 'original')}" 
+                alt="${img3.caption || ''}" 
+                class="progressive-img" 
+                loading="lazy" 
+                decoding="async" 
+                onload="this.classList.add('loaded')" 
+              />
+              ${img3.caption ? `<span class="pix-photo__caption">${img3.caption}</span>` : ''}
             </div>
           </div>
         `;
@@ -1329,16 +1403,34 @@ const PortfolioManager = {
       }
 
       // Rhythm step 4: Default Diptych / Pair
+      const img1 = images[i];
+      const img2 = i + 1 < total ? images[i + 1] : null;
       html += `
         <div class="pix-row pix-row--diptych reveal">
           <div class="pix-photo pix-photo--half" data-index="${i}">
-            <img src="${images[i].src}" alt="${images[i].caption || ''}" loading="lazy" />
-            ${images[i].caption ? `<span class="pix-photo__caption">${images[i].caption}</span>` : ''}
+            <img 
+              src="${this.getImageUrl(img1, 'medium')}" 
+              data-full="${this.getImageUrl(img1, 'original')}" 
+              alt="${img1.caption || ''}" 
+              class="progressive-img" 
+              loading="lazy" 
+              decoding="async" 
+              onload="this.classList.add('loaded')" 
+            />
+            ${img1.caption ? `<span class="pix-photo__caption">${img1.caption}</span>` : ''}
           </div>
-          ${i + 1 < total ? `
+          ${img2 ? `
             <div class="pix-photo pix-photo--half" data-index="${i + 1}">
-              <img src="${images[i + 1].src}" alt="${images[i + 1].caption || ''}" loading="lazy" />
-              ${images[i + 1].caption ? `<span class="pix-photo__caption">${images[i + 1].caption}</span>` : ''}
+              <img 
+                src="${this.getImageUrl(img2, 'medium')}" 
+                data-full="${this.getImageUrl(img2, 'original')}" 
+                alt="${img2.caption || ''}" 
+                class="progressive-img" 
+                loading="lazy" 
+                decoding="async" 
+                onload="this.classList.add('loaded')" 
+              />
+              ${img2.caption ? `<span class="pix-photo__caption">${img2.caption}</span>` : ''}
             </div>
           ` : ''}
         </div>
@@ -1613,7 +1705,15 @@ const DestinationsManager = {
       return `
         <div class="dest-card reveal reveal--visible" data-id="${dest.id}" style="animation-delay: ${index * 0.08}s">
           <div class="dest-card__media">
-            <img src="${dest.coverImage}" alt="${name}" class="dest-card__img" loading="lazy" />
+            <img 
+              src="${dest.coverThumb || dest.coverImage}" 
+              data-full="${dest.coverImage}" 
+              alt="${name}" 
+              class="dest-card__img progressive-img" 
+              loading="lazy" 
+              decoding="async" 
+              onload="this.classList.add('loaded')" 
+            />
             <span class="dest-card__badge">${badge}</span>
             <span class="dest-card__count">✦ ${dest.venueCount} ${venueWord}</span>
           </div>

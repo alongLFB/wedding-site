@@ -472,22 +472,88 @@ const AdminApp = {
   },
 
   /* ------------------------------------------------------------
-     6. Cloudflare R2 Upload Handlers
+     6. Cloudflare R2 Upload Handlers & Client-Side Image Optimizer
      ------------------------------------------------------------ */
   triggerUploadFor(targetInputId) {
     this.activeTargetInputId = targetInputId;
     document.getElementById("global-r2-uploader").click();
   },
 
+  /**
+   * Hardware-Accelerated Canvas Image Compressor (Converts RAW/JPEG to optimized WebP)
+   */
+  async compressImageToBlob(file, maxBound = 1600, quality = 0.82) {
+    return new Promise((resolve) => {
+      // If SVG or non-image, return directly
+      if (file.type === "image/svg+xml" || !file.type.startsWith("image/")) {
+        return resolve(file);
+      }
+
+      const img = new Image();
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        img.onload = () => {
+          const canvas = document.createElement("canvas");
+          let width = img.naturalWidth || img.width;
+          let height = img.naturalHeight || img.height;
+
+          if (width > height) {
+            if (width > maxBound) {
+              height = Math.round((height * maxBound) / width);
+              width = maxBound;
+            }
+          } else {
+            if (height > maxBound) {
+              width = Math.round((width * maxBound) / height);
+              height = maxBound;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.imageSmoothingEnabled = true;
+          ctx.imageSmoothingQuality = "high";
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const newFilename = file.name.replace(/\.[^/.]+$/, "") + ".webp";
+                resolve(new File([blob], newFilename, { type: "image/webp" }));
+              } else {
+                resolve(file);
+              }
+            },
+            "image/webp",
+            quality
+          );
+        };
+        img.onerror = () => resolve(file);
+        img.src = e.target.result;
+      };
+      reader.onerror = () => resolve(file);
+      reader.readAsDataURL(file);
+    });
+  },
+
   async uploadFileToR2(file) {
+    // 1. Client-Side Smart WebP Pre-compression
+    const optimizedFile = await this.compressImageToBlob(file, 1600, 0.84);
+    const thumbFile = await this.compressImageToBlob(file, 450, 0.80);
+
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("file", optimizedFile);
 
     try {
-      const res = await fetch(`${API_BASE}/api/upload`, {
+      const res = await fetch(`${API_BASE}/api/upload?name=${encodeURIComponent(optimizedFile.name)}`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${this.authToken}` },
-        body: formData
+        headers: { 
+          Authorization: `Bearer ${this.authToken}`,
+          "X-Filename": encodeURIComponent(optimizedFile.name)
+        },
+        body: optimizedFile
       });
 
       if (res.ok) {
@@ -496,20 +562,22 @@ const AdminApp = {
           // Add to media state
           this.state.media.unshift({
             url: data.url,
-            filename: data.filename || file.name,
+            thumbUrl: data.url,
+            filename: data.filename || optimizedFile.name,
             key: data.key,
             created_at: new Date().toISOString()
           });
           this.saveLocalCache();
           this.renderMediaGallery();
+          this.renderStats();
           return data.url;
         }
       }
     } catch (e) {
-      console.warn("Direct worker upload fallback to FileReader", e);
+      console.warn("Direct upload fallback to FileReader", e);
     }
 
-    // Local file fallback preview if worker not yet configured
+    // Local file fallback preview
     return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -521,6 +589,7 @@ const AdminApp = {
         });
         this.saveLocalCache();
         this.renderMediaGallery();
+        this.renderStats();
         resolve(localUrl);
       };
       reader.readAsDataURL(file);
@@ -531,18 +600,20 @@ const AdminApp = {
     const files = Array.from(e.target.files);
     if (!files.length) return;
 
-    this.showToast(`正在上传 ${files.length} 张照片至 R2...`, "success");
+    this.showToast(`正在对 ${files.length} 张图片进行智能 WebP 压缩并上传至 R2...`, "success");
 
     for (const file of files) {
       const url = await this.uploadFileToR2(file);
       this.editingCasePhotos.push({
         src: url,
+        thumb: url,
+        original: url,
         caption: file.name.replace(/\.[^/.]+$/, "")
       });
     }
 
     this.renderCasePhotosList();
-    this.showToast("照片上传完成并已加入 Pix 相册", "success");
+    this.showToast("高清照片已自动完成智能 WebP 压缩并同步存储至 R2！", "success");
   },
 
   /* ------------------------------------------------------------

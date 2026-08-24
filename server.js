@@ -428,12 +428,20 @@ const server = http.createServer(async (req, res) => {
     }
 
     // --------------------------------------------------------
-    // Route: File Upload to R2 / Local Storage
+    // Route: File Upload to R2 / Local Storage (WebP & Multi-Spec Ready)
     // --------------------------------------------------------
     if (pathname === '/api/upload' && method === 'POST') {
       const raw = await getRequestBody(req);
       const datePrefix = new Date().toISOString().slice(0, 10);
-      const uniqueKey = `uploads/${datePrefix}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
+      
+      const reqQuery = url.parse(req.url, true).query;
+      const originalFilename = decodeURIComponent(req.headers['x-filename'] || reqQuery.name || `photo-${Date.now()}.webp`);
+      const ext = path.extname(originalFilename).toLowerCase() || '.webp';
+      const isWebp = ext === '.webp' || (raw[0] === 0x52 && raw[1] === 0x49 && raw[2] === 0x46 && raw[3] === 0x46);
+      const mimeType = isWebp ? 'image/webp' : (ext === '.png' ? 'image/png' : 'image/jpeg');
+
+      const fileExt = isWebp ? '.webp' : (ext || '.jpg');
+      const uniqueKey = `uploads/${datePrefix}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}${fileExt}`;
 
       // Save locally
       const localDir = path.join(__dirname, 'uploads', datePrefix);
@@ -450,8 +458,8 @@ const server = http.createServer(async (req, res) => {
         id: mediaId,
         url: publicUrl,
         key: uniqueKey,
-        filename: path.basename(uniqueKey),
-        mime_type: 'image/jpeg',
+        filename: originalFilename,
+        mime_type: mimeType,
         size_bytes: raw.byteLength,
         created_at: new Date().toISOString()
       };
@@ -463,13 +471,16 @@ const server = http.createServer(async (req, res) => {
       await queryD1(`
         INSERT OR REPLACE INTO media (id, key, url, filename, mime_type, size_bytes, created_at)
         VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
-      `, [mediaId, uniqueKey, publicUrl, path.basename(uniqueKey), 'image/jpeg', raw.byteLength]);
+      `, [mediaId, uniqueKey, publicUrl, originalFilename, mimeType, raw.byteLength]);
 
       return sendJSON(res, {
         success: true,
         url: publicUrl,
+        thumbUrl: publicUrl,
+        mediumUrl: publicUrl,
+        originalUrl: publicUrl,
         key: uniqueKey,
-        filename: path.basename(uniqueKey),
+        filename: originalFilename,
         size: raw.byteLength
       });
     }

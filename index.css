@@ -2512,3 +2512,31 @@ h1, h2, h3, h4, h5, h6 {
     text-align: left;
   }
 }
+
+/* ----------------------------------------------------------------
+   17. Progressive Image Loading & Skeleton Loader
+   ---------------------------------------------------------------- */
+.progressive-img {
+  opacity: 0;
+  filter: blur(8px);
+  transform: scale(0.98);
+  transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              filter 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, filter, transform;
+}
+
+.progressive-img.loaded,
+.progressive-img.is-loaded {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+.portfolio-card__media,
+.pix-photo-wrapper,
+.dest-card__media {
+  background-color: rgba(20, 20, 20, 0.04);
+  position: relative;
+  overflow: hidden;
+}
