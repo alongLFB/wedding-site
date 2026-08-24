@@ -130,6 +130,9 @@ async function queryD1(sql, params = []) {
       console.warn('Cloudflare D1 REST API query fallback:', err.message);
     }
   }
+  return null;
+}
+
 // 3.1 Cloudflare CDN Cache Purge Helper
 async function purgeCloudflareCache() {
   const zoneId = process.env.CLOUDFLARE_ZONE_ID;
