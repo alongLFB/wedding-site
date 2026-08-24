@@ -1987,10 +1987,19 @@ function initSmoothScroll() {
    ---------------------------------------------------------------- */
 
 const DataManager = {
+  cachedSettings: null,
+
   async init() {
     this.applyLocalCache();
     await this.fetchD1Content();
     this.bindAdminShortcut();
+
+    // Re-apply dynamic settings whenever language is toggled!
+    document.addEventListener("languageChanged", () => {
+      if (this.cachedSettings) {
+        this.applySettingsToDOM(this.cachedSettings);
+      }
+    });
   },
 
   applyLocalCache() {
@@ -2008,6 +2017,7 @@ const DataManager = {
         DESTINATIONS_DATA.push(...data.destinations);
       }
       if (data.settings) {
+        this.cachedSettings = data.settings;
         this.applySettingsToDOM(data.settings);
       }
     } catch (e) {
@@ -2032,38 +2042,107 @@ const DataManager = {
             DestinationsManager.renderMap();
             DestinationsManager.renderList();
           }
-          if (data.settings) {
+          if (data.settings && Object.keys(data.settings).length > 0) {
+            this.cachedSettings = data.settings;
             this.applySettingsToDOM(data.settings);
           }
         }
       }
     } catch (err) {
-      // Offline or direct static mode: fallback to default curated dataset
+      // Offline or static fallback
     }
   },
 
   applySettingsToDOM(settings) {
+    if (!settings) return;
+    this.cachedSettings = settings;
     const lang = I18n.currentLang || "zh";
 
+    // 1. Site & Brand Name (Top Logo, Hero Title, Footer Logo, Document Title)
+    const siteName = (lang === "zh" ? settings.site_name_zh : settings.site_name_en) || settings.site_name_zh || settings.site_name_en;
+    if (siteName) {
+      // Top Navigation Logo
+      document.querySelectorAll(".header__logo-main").forEach(el => {
+        el.textContent = siteName;
+      });
+
+      // Hero Main Title
+      const heroTitle = document.querySelector(".hero__title");
+      if (heroTitle) heroTitle.textContent = siteName;
+
+      // Footer Logo
+      const footerLogo = document.querySelector(".footer__logo");
+      if (footerLogo) footerLogo.textContent = siteName;
+
+      // Footer copyright
+      const copyright = document.querySelector(".footer__bottom p");
+      if (copyright) {
+        copyright.textContent = `© 2026 ${siteName}. All rights reserved. Powered by Euka Events.`;
+      }
+
+      // About Signature
+      const signature = document.querySelector(".about__signature");
+      if (signature) signature.textContent = `— ${siteName} Team`;
+
+      // Browser Tab Title
+      document.title = `${siteName} — ${lang === 'zh' ? '高端奢华定制婚礼策划与设计' : 'Luxury Wedding Planning & Design'}`;
+    }
+
+    // 2. Hero Tagline
+    if (settings.brand_subtitle) {
+      const tagline = document.querySelector(".hero__tagline");
+      if (tagline) tagline.textContent = settings.brand_subtitle;
+    }
+
+    // 3. Hero Subtitle
+    const heroSub = (lang === "zh" ? settings.hero_subtitle_zh : settings.hero_subtitle_en) || settings.hero_subtitle_zh || settings.hero_subtitle_en;
+    if (heroSub) {
+      const sub = document.querySelector(".hero__subtitle");
+      if (sub) sub.textContent = heroSub;
+    }
+
+    // 4. Contact Email
     if (settings.contact_email) {
-      document.querySelectorAll(".contact__detail span").forEach(el => {
-        if (el.textContent.includes("@")) el.textContent = settings.contact_email;
+      document.querySelectorAll(".contact__detail").forEach(item => {
+        const icon = item.querySelector(".contact__detail-icon");
+        const span = item.querySelector("span:not(.contact__detail-icon)");
+        if (icon && (icon.textContent.includes("✉") || icon.textContent.includes("@")) && span) {
+          span.textContent = settings.contact_email;
+        } else if (span && span.textContent.includes("@")) {
+          span.textContent = settings.contact_email;
+        }
       });
     }
 
+    // 5. Contact Phone
     if (settings.contact_phone) {
-      document.querySelectorAll(".contact__detail span").forEach(el => {
-        if (el.textContent.includes("+")) el.textContent = settings.contact_phone;
+      document.querySelectorAll(".contact__detail").forEach(item => {
+        const icon = item.querySelector(".contact__detail-icon");
+        const span = item.querySelector("span:not(.contact__detail-icon)");
+        if (icon && (icon.textContent.includes("☎") || icon.textContent.includes("tel")) && span) {
+          span.textContent = settings.contact_phone;
+        } else if (span && span.textContent.includes("+")) {
+          span.textContent = settings.contact_phone;
+        }
       });
     }
 
-    if (settings.hero_subtitle_zh && lang === "zh") {
-      const sub = document.querySelector(".hero__subtitle");
-      if (sub) sub.textContent = settings.hero_subtitle_zh;
+    // 6. Contact Address / Offices
+    const address = (lang === "zh" ? settings.contact_address_zh : settings.contact_address_en) || settings.contact_address_zh || settings.contact_address_en;
+    if (address) {
+      document.querySelectorAll(".contact__detail").forEach(item => {
+        const icon = item.querySelector(".contact__detail-icon");
+        const span = item.querySelector("span:not(.contact__detail-icon)");
+        if (icon && icon.textContent.includes("◎") && span) {
+          span.textContent = address;
+        }
+      });
     }
-    if (settings.hero_subtitle_en && lang === "en") {
-      const sub = document.querySelector(".hero__subtitle");
-      if (sub) sub.textContent = settings.hero_subtitle_en;
+
+    // 7. Social Links
+    if (settings.social_instagram) {
+      const ig = document.querySelector('.contact__social-link[aria-label="Instagram"]');
+      if (ig) ig.href = settings.social_instagram;
     }
   },
 
