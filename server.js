@@ -102,17 +102,23 @@ async function queryD1(sql, params = []) {
   const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
   const databaseId = process.env.CLOUDFLARE_D1_DATABASE_ID;
   const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+  const authEmail = process.env.CLOUDFLARE_AUTH_EMAIL || process.env.CLOUDFLARE_EMAIL;
 
   if (accountId && databaseId && apiToken && !accountId.includes('your_')) {
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      if (authEmail) {
+        headers['X-Auth-Email'] = authEmail;
+        headers['X-Auth-Key'] = apiToken;
+      } else {
+        headers['Authorization'] = `Bearer ${apiToken}`;
+      }
+
       const response = await fetch(
         `https://api.cloudflare.com/client/v4/accounts/${accountId}/d1/database/${databaseId}/query`,
         {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${apiToken}`,
-          },
+          headers,
           body: JSON.stringify({ sql, params }),
         }
       );
