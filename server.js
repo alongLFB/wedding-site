@@ -393,15 +393,26 @@ const server = http.createServer(async (req, res) => {
 
       const publicBase = process.env.R2_PUBLIC_URL || 'https://pub-r2.eukaevents.com';
       const publicUrl = `${publicBase}/${uniqueKey}`;
+      const mediaId = 'media-' + Date.now();
 
-      localStore.media.unshift({
+      const mediaItem = {
+        id: mediaId,
         url: publicUrl,
         key: uniqueKey,
         filename: path.basename(uniqueKey),
-        size: raw.byteLength,
+        mime_type: 'image/jpeg',
+        size_bytes: raw.byteLength,
         created_at: new Date().toISOString()
-      });
+      };
+
+      localStore.media.unshift(mediaItem);
       saveLocalStore();
+
+      // Record in D1 media table
+      await queryD1(`
+        INSERT OR REPLACE INTO media (id, key, url, filename, mime_type, size_bytes, created_at)
+        VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      `, [mediaId, uniqueKey, publicUrl, path.basename(uniqueKey), 'image/jpeg', raw.byteLength]);
 
       return sendJSON(res, {
         success: true,
@@ -413,7 +424,9 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (pathname === '/api/media' && method === 'GET') {
-      return sendJSON(res, { success: true, list: localStore.media });
+      const d1Media = await queryD1('SELECT * FROM media ORDER BY created_at DESC');
+      const list = (d1Media && d1Media.length) ? d1Media : localStore.media;
+      return sendJSON(res, { success: true, list: list || [] });
     }
 
     // Default 404 for API

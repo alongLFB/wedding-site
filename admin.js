@@ -167,6 +167,22 @@ const AdminApp = {
     } catch (err) {
       console.log("Worker API not reachable, running on local CMS cache.", err);
     }
+
+    // 3. Fetch real uploaded R2 media list
+    if (this.authToken) {
+      try {
+        const mRes = await fetch(`${API_BASE}/api/media`, {
+          headers: { Authorization: `Bearer ${this.authToken}` }
+        });
+        if (mRes.ok) {
+          const mData = await mRes.json();
+          if (mData.success && Array.isArray(mData.list)) {
+            this.state.media = mData.list;
+            this.saveLocalCache();
+          }
+        }
+      } catch (e) {}
+    }
   },
 
   saveLocalCache() {
@@ -187,7 +203,7 @@ const AdminApp = {
   renderStats() {
     document.getElementById("stat-portfolio-count").textContent = this.state.portfolio.length;
     document.getElementById("stat-dest-count").textContent = this.state.destinations.length;
-    document.getElementById("stat-media-count").textContent = this.state.media.length || (this.state.portfolio.length * 10);
+    document.getElementById("stat-media-count").textContent = this.state.media.length;
   },
 
   renderSettingsForm() {
